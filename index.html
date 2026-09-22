@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para ti 🌻</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at 50% 45%,#18213c 0%,#090d1d 48%,#03050c 100%);
+  color:#fff8dc;
+}
+.screen{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:24px;opacity:0;visibility:hidden;transition:opacity 1s ease;
+}
+.screen.active{opacity:1;visibility:visible}
+.card{text-align:center;max-width:720px;position:relative;z-index:10}
+.small{font-family:Arial,sans-serif;letter-spacing:4px;text-transform:uppercase;font-size:12px;color:#ffd95a}
+h1{font-size:clamp(42px,10vw,86px);margin:18px 0 12px;line-height:.95;text-shadow:0 0 30px #ffd43b55}
+h2{font-size:clamp(27px,6vw,52px);margin:12px 0}
+p{font-family:Arial,sans-serif;font-size:clamp(16px,3vw,21px);line-height:1.65;color:#f9edbd}
+button{
+  margin-top:28px;border:0;border-radius:999px;padding:15px 28px;
+  font-size:16px;font-weight:700;color:#302000;background:#ffd43b;
+  box-shadow:0 0 25px #ffd43b55;cursor:pointer;transition:.25s;
+}
+button:hover{transform:scale(1.05);box-shadow:0 0 35px #ffd43b88}
+.glow{
+  position:absolute;width:320px;height:320px;border-radius:50%;
+  background:#ffd43b12;filter:blur(20px);animation:pulse 3s infinite;z-index:-1
+}
+@keyframes pulse{50%{transform:scale(1.25);opacity:.5}}
+#garden{
+  position:fixed;inset:0;overflow:hidden;
+  background:linear-gradient(#10182c,#070b16 65%,#0b100d);
+}
+.stars,.petals{position:absolute;inset:0;pointer-events:none}
+.star{position:absolute;width:3px;height:3px;background:#fff4bd;border-radius:50%;opacity:.7;animation:twinkle 2s infinite alternate}
+@keyframes twinkle{to{opacity:.15;transform:scale(.5)}}
+.ground{
+  position:absolute;bottom:-90px;left:50%;transform:translateX(-50%);
+  width:min(900px,140vw);height:190px;border-radius:50% 50% 0 0;
+  background:radial-gradient(ellipse at center,#26371d,#10170d 60%,transparent 70%);
+}
+.bouquet{
+  position:absolute;left:50%;bottom:9%;width:min(620px,92vw);height:min(610px,76vh);
+  transform:translateX(-50%);
+}
+.stem{
+  position:absolute;bottom:38px;left:50%;width:5px;height:48%;
+  background:linear-gradient(#537d2a,#243d16);transform-origin:bottom;
+  border-radius:5px;
+}
+.flower{
+  position:absolute;left:50%;bottom:38%;width:44px;height:44px;
+  transform:translate(-50%,-50%) scale(0);animation:bloom .8s forwards;
+}
+@keyframes bloom{to{transform:translate(-50%,-50%) scale(1)}}
+.center{position:absolute;left:50%;top:50%;width:18px;height:18px;background:#6b4300;border-radius:50%;transform:translate(-50%,-50%);z-index:3;box-shadow:0 0 8px #9d6500}
+.petal{
+  position:absolute;left:50%;top:50%;width:17px;height:30px;
+  background:linear-gradient(#ffe96a,#f7b900);border-radius:60% 60% 45% 45%;
+  transform-origin:50% 100%;
+}
+.petal:nth-child(1){transform:translate(-50%,-100%) rotate(0)}
+.petal:nth-child(2){transform:translate(-50%,-100%) rotate(45deg)}
+.petal:nth-child(3){transform:translate(-50%,-100%) rotate(90deg)}
+.petal:nth-child(4){transform:translate(-50%,-100%) rotate(135deg)}
+.petal:nth-child(5){transform:translate(-50%,-100%) rotate(180deg)}
+.petal:nth-child(6){transform:translate(-50%,-100%) rotate(225deg)}
+.petal:nth-child(7){transform:translate(-50%,-100%) rotate(270deg)}
+.petal:nth-child(8){transform:translate(-50%,-100%) rotate(315deg)}
+.ribbon{
+ position:absolute;left:50%;bottom:23%;transform:translateX(-50%);
+ width:90px;height:65px;background:#d7aa18;border-radius:10px 10px 24px 24px;
+ box-shadow:0 8px 20px #0008;z-index:20
+}
+.ribbon:before,.ribbon:after{content:"";position:absolute;top:5px;width:45px;height:58px;border:7px solid #f0c72d}
+.ribbon:before{right:50%;border-radius:50% 15% 50% 15%;transform:rotate(25deg)}
+.ribbon:after{left:50%;border-radius:15% 50% 15% 50%;transform:rotate(-25deg)}
+.counter{
+ position:absolute;top:22px;right:22px;font:700 13px Arial;color:#ffe47b;
+ background:#0006;padding:8px 12px;border-radius:20px;z-index:30
+}
+.final{
+ position:absolute;bottom:4%;left:50%;transform:translateX(-50%);
+ width:min(620px,90vw);text-align:center;z-index:40
+}
+.final h2{font-size:clamp(25px,6vw,45px);text-shadow:0 0 20px #ffd43b55}
+.final p{margin:8px 0;font-size:15px}
+.petal-fall{
+ position:absolute;top:-30px;width:13px;height:20px;background:#ffd43b;
+ border-radius:70% 20% 70% 20%;animation:fall linear forwards;opacity:.9
+}
+@keyframes fall{to{transform:translate3d(var(--x),110vh,0) rotate(700deg);opacity:.1}}
+.fadeout{animation:fadeout .8s forwards}
+@keyframes fadeout{to{opacity:0;transform:scale(1.08)}}
+</style>
+</head>
+<body>
+
+<section id="welcome" class="screen active">
+  <div class="card">
+    <div class="glow"></div>
+    <div class="small">21 de septiembre · para ti</div>
+    <h1>Hola, mi amor 💛</h1>
+    <p>Hoy quería hacerte llegar un pequeño detalle, aunque estemos lejos.</p>
+    <button id="open">Tengo algo para ti 🌻</button>
+  </div>
+</section>
+
+<section id="intro" class="screen">
+  <div class="card">
+    <div class="small">Una sorpresa para ti</div>
+    <h2>Feliz 21 de septiembre 🌻</h2>
+    <p>Porque hay detalles que no necesitan estar cerca para sentirse.</p>
+    <button id="reveal">Abrir mi sorpresa ✨</button>
+  </div>
+</section>
+
+<section id="garden">
+  <div class="stars" id="stars"></div>
+  <div class="counter" id="counter">0 / 100 flores 🌻</div>
+  <div class="ground"></div>
+  <div class="bouquet" id="bouquet"></div>
+  <div class="final" id="final" style="opacity:0;transform:translate(-50%,20px);transition:1.5s">
+    <h2>100 flores para ti 🌻</h2>
+    <p>Aunque estemos lejos, quería encontrar una forma de hacerte llegar un poquito de mi cariño.</p>
+    <p><strong>Feliz 21 de septiembre, mi amor. 💛</strong></p>
+  </div>
+</section>
+
+<script>
+const welcome=document.getElementById("welcome");
+const intro=document.getElementById("intro");
+const garden=document.getElementById("garden");
+const bouquet=document.getElementById("bouquet");
+const counter=document.getElementById("counter");
+const final=document.getElementById("final");
+
+garden.style.opacity=0;
+garden.style.visibility="hidden";
+
+document.getElementById("open").onclick=()=>{
+  welcome.classList.remove("active");
+  intro.classList.add("active");
+};
+
+document.getElementById("reveal").onclick=()=>{
+  intro.classList.remove("active");
+  garden.style.visibility="visible";
+  garden.style.opacity=1;
+  createStars();
+  bloomBouquet();
+  fallingPetals();
+};
+
+function createStars(){
+  const box=document.getElementById("stars");
+  for(let i=0;i<70;i++){
+    const s=document.createElement("i");
+    s.className="star";
+    s.style.left=Math.random()*100+"%";
+    s.style.top=Math.random()*75+"%";
+    s.style.animationDelay=Math.random()*2+"s";
+    box.appendChild(s);
+  }
+}
+
+function flowerHTML(){
+  return `<div class="flower">
+    ${Array.from({length:8},()=>'<span class="petal"></span>').join("")}
+    <span class="center"></span>
+  </div>`;
+}
+
+function bloomBouquet(){
+  const count=100;
+  for(let i=0;i<count;i++){
+    const wrapper=document.createElement("div");
+    wrapper.innerHTML=flowerHTML();
+    const flower=wrapper.firstElementChild;
+    const angle=(i/count)*Math.PI*2;
+    const radius=45 + Math.random()*230;
+    let x=50 + Math.cos(angle)*radius/6 + (Math.random()-0.5)*16;
+    let y=42 + Math.sin(angle)*radius/10 + (Math.random()-0.5)*20;
+    x=Math.max(8,Math.min(92,x));
+    y=Math.max(8,Math.min(82,y));
+    flower.style.left=x+"%";
+    flower.style.bottom=y+"%";
+    flower.style.animationDelay=(i*0.045)+"s";
+    flower.style.transformOrigin="center";
+    bouquet.appendChild(flower);
+
+    const stem=document.createElement("div");
+    stem.className="stem";
+    stem.style.left=x+"%";
+    stem.style.height=(30+Math.random()*32)+"%";
+    stem.style.transform=`rotate(${(x-50)*0.35}deg)`;
+    stem.style.opacity=.45+Math.random()*.55;
+    bouquet.appendChild(stem);
+
+    setTimeout(()=>counter.textContent=(i+1)+" / 100 flores 🌻",(i*45)+300);
+  }
+  setTimeout(()=>{
+    const ribbon=document.createElement("div");
+    ribbon.className="ribbon";
+    bouquet.appendChild(ribbon);
+    final.style.opacity=1;
+    final.style.transform="translate(-50%,0)";
+  },100*45+1100);
+}
+
+function fallingPetals(){
+  for(let i=0;i<45;i++){
+    setTimeout(()=>{
+      const p=document.createElement("span");
+      p.className="petal-fall";
+      p.style.left=Math.random()*100+"%";
+      p.style.setProperty("--x",(Math.random()*240-120)+"px");
+      p.style.animationDuration=(4+Math.random()*5)+"s";
+      document.querySelector(".petals")?.appendChild(p) || garden.appendChild(p);
+      setTimeout(()=>p.remove(),10000);
+    },Math.random()*5000);
+  }
+}
+</script>
+</body>
+</html>
